@@ -153,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="flex items-center justify-between mb-6 pb-2 border-b" style={{ borderColor: theme.border }}>
           <div className="flex items-center gap-2">
             <span style={{ color: theme.accent }} className="font-bold text-lg">
-              ⌘ keyflow account
+              ⌘ hotkey-it account
             </span>
           </div>
           <button

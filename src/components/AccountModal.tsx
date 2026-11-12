@@ -109,7 +109,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         <div className="flex items-center justify-between mb-8 pb-3 border-b" style={{ borderColor: theme.border }}>
           <div className="flex items-center gap-3">
             <span style={{ color: theme.accent }} className="font-bold text-lg tracking-tight">
-              ⌘ keyflow profile
+              ⌘ hotkey-it profile
             </span>
           </div>
 

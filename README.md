@@ -1,158 +1,95 @@
-# ⌘ KeyFlow
+# ⌘ hotkey-it
 
 > **Minimalist hotkey & muscle memory trainer for power users.**  
 > Inspired by the distraction-free aesthetics and philosophy of Monkeytype, built specifically for mastering professional software keyboard shortcuts.
 
-![KeyFlow Preview](public/assets/aistudio/image_80b663d3.png)
+![hotkey-it Preview](public/assets/preview.png)
 
 ---
 
-## ✨ Features
+## ⚡ Features
 
-- **⚡ Professional Software Packs**: Built-in curated shortcut packs for **VS Code**, **Figma**, **Blender 3D**, and **Excel / Sheets**.
-- **🔥 Firebase Authentication & Real Cloud Persistence**:
+- **🎯 Professional Software Packs**: Built-in curated shortcut packs for **VS Code**, **Figma**, **Blender 3D**, and **Excel / Sheets**.
+- **🔥 Firebase Cloud Authentication**:
   - Email & Password registration & login.
-  - One-click Google and GitHub OAuth sign-in (`signInWithPopup`).
+  - 1-click Google and GitHub OAuth sign-in (`signInWithPopup`).
+  - Choose your custom username and password after Google Sign-in to log in either via Google or Email/Password.
   - Real-time profile state sync via Firestore `onSnapshot`.
 - **🏷️ Customizable Database Badges**:
   - User documents include a `badge` field in Firestore (empty by default).
-  - Can be edited directly via the Firebase Console (e.g. `"🚀 Mythical"`, `"🔥 Grandmaster"`).
-  - Automatically renders as a sleek inline pill badge in the profile and global leaderboards.
-- **🏆 Global Leaderboards**:
+  - Can be written directly in the Firebase Console (e.g. `🚀 Mythical`, `🔥 Grandmaster`).
+  - Automatically renders as a sleek inline pill badge in the profile and global leaderboard.
+- **🏆 100% Real Live Leaderboard**:
   - Live Firestore rankings with filtering (`Time 15`, `Time 60`, `10 Keys`, `25 Keys`, `All Packs`).
   - Columns: `#`, `name` with badges, `wpm / spm`, `accuracy`, `raw`, `consistency`, and `date`.
+  - Zero mock or placeholder data.
+- **📈 Chart.js & anime.js Visuals**:
+  - Interactive Chart.js performance curve with detailed per-shortcut tooltips.
+  - Smooth anime.js micro-animations on stat cards and keycap chord feedback.
+  - FontAwesome iconography.
 - **🎨 7 Themed Palettes**: Obsidian Minimal, Dracula, Nord Frost, Cyberpunk, Retro Beige, Matcha Moss, and Matrix Phosphor.
-- **🔊 Procedural Switch Audio**: Zero external audio assets. Real-time procedural mechanical keyboard switch synthesis via the Web Audio API (Clicky Blue, Tactile Brown, Linear Red, or Silent).
-- **📊 Monkeytype-Style Scorecard Export**:
-  - Copies an image scorecard directly to the system clipboard as PNG (`ClipboardItem`).
-  - Displays the card in an overlay for 3 seconds before auto-closing.
-  - Interactive SVG performance graph (Speed SPM, Reaction ms, and combined views).
-- **⌨️ Robust Chord Interception Engine**:
-  - Dual-phase capture (`window` + `document`) preventing browser default actions (`Ctrl+P`, `Ctrl+S`, `Ctrl+D`, `Shift+Alt+Down`).
-  - Automatic OS detection (`Cmd ⌘` / `Option ⌥` on macOS vs. `Ctrl` / `Alt` / `Win ⊞` on Windows/Linux).
-  - Physical keycode resolution (handles shifted characters like `Shift + [` resulting in `{` correctly).
-  - Fullscreen Focus Mode with `navigator.keyboard.lock()` support.
-- **⏱️ Monotonic Continuous Timer**:
-  - Timer starts the exact moment you press your first key and runs non-stop without stuttering or resetting on keystrokes.
+- **🔊 Procedural Switch Audio**: Real-time procedural mechanical keyboard switch synthesis via the Web Audio API (Clicky Blue, Tactile Brown, Linear Red, or Silent).
+- **⏱️ Monotonic Continuous Timer**: Starts the instant you hit your first key and runs non-stop without resetting on keystrokes.
+- **🖼️ Monkeytype-Style Scorecard Export**: Copies a 2x Retina PNG scorecard directly to the system clipboard (`ClipboardItem`) and displays a 3-second preview.
 
 ---
 
-## 🔑 Firebase Setup & GitHub Repository Secrets Guide
+## 🚀 How to Host on GitHub Pages (2 Minutes Setup)
 
-KeyFlow supports zero-config local run with pre-bundled `firebase-applet-config.json`, and seamlessly reads Vite environment variables (`VITE_FIREBASE_*`) for GitHub repository exports and CI/CD deployments.
+This repository includes a pre-configured automated deployment workflow: `.github/workflows/deploy.yml`.
 
-### 1. What to get from the Firebase Console
-1. Go to the [Firebase Console](https://console.firebase.google.com/).
-2. Create or open your project.
-3. In **Project settings** (gear icon ⚙️ at top left) -> **General**:
-   - Scroll down to **Your apps**.
-   - Select your Web App (or click `</>` to create a Web app: e.g. "KeyFlow Web").
-   - You will see the `firebaseConfig` object:
-     ```javascript
-     const firebaseConfig = {
-       apiKey: "AIzaSy...",
-       authDomain: "your-project.firebaseapp.com",
-       projectId: "your-project",
-       storageBucket: "your-project.firebasestorage.app",
-       messagingSenderId: "1234567890",
-       appId: "1:1234567890:web:abcdef..."
-     };
-     ```
-4. In **Build -> Authentication**:
-   - Click **Sign-in method** and enable:
-     - **Email/Password**
-     - **Google**
-     - **GitHub** (requires Client ID & Secret from GitHub Developer Settings)
-5. In **Build -> Firestore Database**:
-   - Create database in production mode.
-   - Deploy the rules provided in `firestore.rules`.
-
-### 2. Where to put them in GitHub Repository Secrets
-If you are deploying KeyFlow using GitHub Actions (e.g. to GitHub Pages, Cloudflare Pages, or Vercel):
-1. Open your GitHub Repository.
-2. Go to **Settings** -> **Secrets and variables** -> **Actions**.
-3. Under **Repository secrets**, click **New repository secret** and add:
-   - `VITE_FIREBASE_API_KEY`: Value from `apiKey`
-   - `VITE_FIREBASE_AUTH_DOMAIN`: Value from `authDomain`
-   - `VITE_FIREBASE_PROJECT_ID`: Value from `projectId`
-   - `VITE_FIREBASE_STORAGE_BUCKET`: Value from `storageBucket`
-   - `VITE_FIREBASE_MESSAGING_SENDER_ID`: Value from `messagingSenderId`
-   - `VITE_FIREBASE_APP_ID`: Value from `appId`
-   - `VITE_FIREBASE_DATABASE_ID`: Optional (e.g. `(default)`)
-
-Or create a local `.env` file from `.env.example`:
+### Step 1: Push Repository to GitHub
 ```bash
-cp .env.example .env
+git init
+git add .
+git commit -m "Initial commit for hotkey-it"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/hotkey-it.git
+git push -u origin main
 ```
 
+### Step 2: Add Secrets in GitHub Repository
+1. Open your repository on GitHub.
+2. Go to **Settings** ➔ **Secrets and variables** ➔ **Actions**.
+3. Under **Repository secrets**, click **New repository secret** and add these values:
+
+| Secret Name | Exact Value for this Project |
+| :--- | :--- |
+| `VITE_FIREBASE_API_KEY` | `AIzaSyDOuTETTeDPZP7nZQhJdL6c7NZHSVFokz0` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `isentropic-outlook-lhl8x.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | `isentropic-outlook-lhl8x` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | `isentropic-outlook-lhl8x.firebasestorage.app` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | `1041765679136` |
+| `VITE_FIREBASE_APP_ID` | `1:1041765679136:web:0d95cf0f396a37aa727c45` |
+| `VITE_FIREBASE_DATABASE_ID` | `ai-studio-keyflow-116ecf1b-130a-4270-96b7-93f649db85ea` |
+
+### Step 3: Enable GitHub Pages
+1. In your GitHub repository, go to **Settings** ➔ **Pages**.
+2. Under **Build and deployment** ➔ **Source**, select **GitHub Actions**.
+3. That's it! GitHub will automatically run `.github/workflows/deploy.yml`, build the project with your secrets, and deploy it to `https://YOUR_USERNAME.github.io/hotkey-it/`.
+
 ---
 
-## 🏷️ How to Edit User Badges in Firestore
-Every user document is stored in the collection `users/{userId}`:
-1. Open [Firebase Console -> Firestore Database](https://console.firebase.google.com/).
-2. Click on the `users` collection.
-3. Select any user document.
-4. Add or edit the field `badge` (type: `string`):
+## 🏷️ How to Assign User Badges in Firestore
+
+1. Open [Firebase Console](https://console.firebase.google.com/).
+2. Select your project: `isentropic-outlook-lhl8x`.
+3. Go to **Firestore Database** ➔ database `ai-studio-keyflow-116ecf1b-130a-4270-96b7-93f649db85ea`.
+4. Open the `users` collection and select any user document.
+5. In the `badge` field (type `string`), enter any text you want:
    - Example: `🚀 Mythical`
    - Example: `🔥 Grandmaster`
    - Example: `⚡ Speed Demon`
-5. Click **Save**. The badge will immediately appear in the user's profile, top navigation, and on the leaderboard next to their scores!
+6. Click **Save**. The badge will instantly appear in the user's profile, top navigation, and leaderboard!
 
 ---
 
-## 📁 Project Architecture & Codebase Map
+## 🛠️ Local Development
 
-For developers customizing or extending KeyFlow, here is where everything is located:
-
-```
-├── src/
-│   ├── data/
-│   │   ├── presets.ts      👈 [SHORTCUTS LIST] All software hotkey packs live here!
-│   │   └── themes.ts       👈 [THEMES LIST] All color themes & palettes live here!
-│   │
-│   ├── lib/
-│   │   └── firebase.ts     👈 Firebase app, auth, and firestore singleton & error handlers
-│   │
-│   ├── utils/
-│   │   ├── engine.ts       👈 Core keyboard engine & chord matcher
-│   │   ├── auth.ts         👈 Real Firebase Auth, Firestore stats sync & leaderboard query
-│   │   ├── cardGenerator.ts👈 Monkeytype-style 2x Retina PNG scorecard generator
-│   │   ├── audio.ts        👈 Web Audio API procedural mechanical switch synthesizer
-│   │   └── storage.ts      👈 Sanitized LocalStorage manager (settings & history)
-│   │
-│   ├── components/
-│   │   ├── Navbar.tsx           👈 Top bar (pack picker, timer/keys/zen, crown, profile button)
-│   │   ├── ActivePrompt.tsx     👈 Central card displaying the target shortcut & keycaps
-│   │   ├── ChordVisualizer.tsx  👈 Real-time live HUD showing physically held modifier keys
-│   │   ├── ResultsView.tsx      👈 Post-test screen with performance graph & scorecard
-│   │   ├── AuthModal.tsx        👈 Monkeytype dual-panel Register & Sign-in modal
-│   │   ├── AccountModal.tsx     👈 Profile modal (avatar, badge, XP level, bio, keyboard, heatmap, PBs)
-│   │   ├── LeaderboardModal.tsx 👈 Live global Firestore rankings with filters & badges
-│   │   ├── CheatsheetModal.tsx  👈 In-app searchable shortcut reference
-│   │   ├── HistoryModal.tsx     👈 Personal bests & previous sessions history
-│   │   └── SettingsModal.tsx    👈 Theme selector, sound profile, and volume controls
-│   │
-│   ├── types/
-│   │   └── index.ts        👈 TypeScript definitions (ShortcutDefinition, SessionResult, UserProfile, LeaderboardEntry)
-│   ├── App.tsx             👈 Main state orchestrator & dual-level keyboard event listener
-│   └── main.tsx            👈 React entry point
-├── firestore.rules         👈 Zero-trust ABAC Firestore security rules
-└── firebase-blueprint.json 👈 Intermediate representation schema
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ or Bun
-- npm, pnpm, or bun
-
-### Local Development
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/keyflow.git
-cd keyflow
+# 1. Clone repository
+git clone https://github.com/YOUR_USERNAME/hotkey-it.git
+cd hotkey-it
 
 # 2. Install dependencies
 npm install
@@ -163,15 +100,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Building for Production
+### Production Build
 ```bash
-# Build production bundle
 npm run build
-
-# Preview production build locally
 npm run preview
 ```
-The output directory will be `dist/`, containing pure static HTML/CSS/JS ready to deploy to GitHub Pages, Cloudflare Pages, Vercel, or Netlify.
 
 ---
 
@@ -182,7 +115,7 @@ The output directory will be `dist/`, containing pure static HTML/CSS/JS ready t
 | `Tab + Enter` | Quick restart test |
 | `Esc` | Reset to start / Close open modals |
 | `?` | Open shortcut cheatsheet |
-| Click `⌘ keyflow` logo | Instantly return to active trainer |
+| Click `⌘ hotkey-it` logo | Instantly return to active trainer |
 
 ---
 

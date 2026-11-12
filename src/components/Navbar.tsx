@@ -118,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               style={{ color: theme.accent }}
               className="font-mono font-black text-xl tracking-tighter transition-transform group-hover:scale-105"
             >
-              ⌘ keyflow
+              ⌘ hotkey-it
             </span>
           </div>
 

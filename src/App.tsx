@@ -638,7 +638,7 @@ export default function App() {
 
       {/* Subtle Footer */}
       <footer className="py-4 px-6 text-center text-[11px] font-mono select-none" style={{ color: theme.subText }}>
-        <span>KeyFlow</span> • <span>Master the tools of your craft</span> • <span style={{ color: theme.accent }}>Tab + Enter to restart</span>
+        <span>hotkey-it</span> • <span>Master the tools of your craft</span> • <span style={{ color: theme.accent }}>Tab + Enter to restart</span>
       </footer>
 
       {/* Modals */}
