@@ -1,0 +1,6 @@
+{
+  "name": "KeyFlow",
+  "description": "Minimalist hotkey & muscle memory trainer for power users.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

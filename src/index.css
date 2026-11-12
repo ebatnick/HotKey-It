@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.25s ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.15s ease-out;
+}

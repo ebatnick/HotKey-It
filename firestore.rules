@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net: default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['uid', 'username']) &&
+        data.uid is string && data.uid.size() <= 128 &&
+        data.username is string && data.username.size() > 0 && data.username.size() <= 32 &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 128)) &&
+        (!('joinedDate' in data) || (data.joinedDate is string && data.joinedDate.size() <= 64)) &&
+        (!('bio' in data) || (data.bio is string && data.bio.size() <= 256)) &&
+        (!('keyboard' in data) || (data.keyboard is string && data.keyboard.size() <= 128)) &&
+        (!('badge' in data) || (data.badge is string && data.badge.size() <= 64)) &&
+        (!('level' in data) || data.level is number) &&
+        (!('xp' in data) || data.xp is number) &&
+        (!('currentStreak' in data) || data.currentStreak is number) &&
+        (!('testsCompleted' in data) || data.testsCompleted is number) &&
+        (!('testsStarted' in data) || data.testsStarted is number) &&
+        (!('timeTypingSeconds' in data) || data.timeTypingSeconds is number);
+    }
+
+    function isValidLeaderboardEntry(data) {
+      return data.keys().hasAll(['userId', 'username', 'spm', 'accuracy', 'raw', 'consistency', 'modeType', 'modeValue']) &&
+        data.userId is string && data.userId.size() <= 128 &&
+        data.username is string && data.username.size() > 0 && data.username.size() <= 32 &&
+        (!('badge' in data) || (data.badge is string && data.badge.size() <= 64)) &&
+        data.spm is number && data.spm >= 0 && data.spm <= 500 &&
+        data.accuracy is number && data.accuracy >= 0 && data.accuracy <= 100 &&
+        data.raw is number && data.raw >= 0 && data.raw <= 500 &&
+        data.consistency is number && data.consistency >= 0 && data.consistency <= 100 &&
+        data.modeType is string && data.modeType.size() <= 16 &&
+        data.modeValue is number &&
+        (!('preset' in data) || (data.preset is string && data.preset.size() <= 32)) &&
+        (!('date' in data) || (data.date is string && data.date.size() <= 64));
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() &&
+        request.auth.uid == userId &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming()) &&
+        incoming().uid == request.auth.uid;
+      allow update: if isSignedIn() &&
+        request.auth.uid == userId &&
+        isValidUserProfile(incoming()) &&
+        incoming().uid == existing().uid;
+      allow delete: if false;
+    }
+
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow create: if isSignedIn() &&
+        isValidId(entryId) &&
+        isValidLeaderboardEntry(incoming()) &&
+        incoming().userId == request.auth.uid;
+      allow update: if false;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

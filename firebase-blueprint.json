@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile, statistics, personal bests, and database badge",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "username": { "type": "string", "maxLength": 32 },
+        "email": { "type": "string", "maxLength": 128 },
+        "joinedDate": { "type": "string", "maxLength": 64 },
+        "currentStreak": { "type": "number" },
+        "level": { "type": "number" },
+        "xp": { "type": "number" },
+        "testsCompleted": { "type": "number" },
+        "testsStarted": { "type": "number" },
+        "timeTypingSeconds": { "type": "number" },
+        "bio": { "type": "string", "maxLength": 256 },
+        "keyboard": { "type": "string", "maxLength": 128 },
+        "badge": { "type": "string", "maxLength": 64 },
+        "personalBests": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "username"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Competitive score records displayed on Monkeytype-style leaderboard",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "username": { "type": "string", "maxLength": 32 },
+        "badge": { "type": "string", "maxLength": 64 },
+        "spm": { "type": "number" },
+        "accuracy": { "type": "number" },
+        "raw": { "type": "number" },
+        "consistency": { "type": "number" },
+        "preset": { "type": "string", "maxLength": 32 },
+        "modeType": { "type": "string", "maxLength": 16 },
+        "modeValue": { "type": "number" },
+        "date": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "username", "spm", "accuracy", "raw", "consistency", "modeType", "modeValue"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile collection holding stats and customizable badge"
+    },
+    "/leaderboard/{entryId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Public leaderboard records queryable by mode and score"
+    }
+  }
+}
